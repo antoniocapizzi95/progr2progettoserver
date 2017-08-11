@@ -6,11 +6,7 @@
 package javahttpserver;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
-
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 /**
@@ -27,6 +23,10 @@ public class JavaHTTPServer {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
         server.createContext("/upload", new UploadHandler());
         server.createContext("/getSR", new SimilarityHandler());
+        server.createContext("/getFUSituation", new FUSituationHandler());
+        server.createContext("/getNumber", new GetNumberHandler());
+        server.createContext("/setIndex", new SetIndexHandler());
+        server.createContext("/removeFile", new RemoveFileHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
     }

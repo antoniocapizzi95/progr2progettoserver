@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 public class ImportTxt {
     public static ArrayList list = new ArrayList();
+    public static int index1 = 0;
+    public static int index2 = 0;
     
     public static void insert(File elem) {
         ImportTxt.list.add(elem);

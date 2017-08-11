@@ -17,10 +17,18 @@ import java.io.OutputStream;
 public class SimilarityHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange he) throws IOException {
-        File firstElem = (File) ImportTxt.list.get(0);
-        File secondElem = (File) ImportTxt.list.get(1);
-        double result = SimilarityCheck.compareStrings(firstElem.content, secondElem.content);
-        String response = Double.toString(result * 100.0);
+        String response = null;
+        if(ImportTxt.list.isEmpty() || ImportTxt.list.size() == 1) {
+            response = "Error: Upload at least 2 files";
+        } else {
+            File firstElem = (File) ImportTxt.list.get(ImportTxt.index1 - 1);
+            File secondElem = (File) ImportTxt.list.get(ImportTxt.index2 - 1);
+            double result = SimilarityCheck.compareStrings(firstElem.content, secondElem.content);
+            response = Double.toString(result * 100.0);
+            ImportTxt.index1 = 0;
+            ImportTxt.index2 = 0;
+        }
+        
         he.sendResponseHeaders(200, response.length());
         OutputStream os = he.getResponseBody();
         os.write(response.getBytes());
