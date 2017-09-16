@@ -24,7 +24,7 @@ public class FUSituationHandler implements HttpHandler {
         
         String filesTitle = "";
         for(int i=0; i<ImportTxt.list.size(); i++) {
-            File elem = (File) ImportTxt.list.get(i);
+            TextFile elem = (TextFile) ImportTxt.list.get(i);
             String indexString = Integer.toString(i+1);
             filesTitle = filesTitle + indexString+")"+elem.title+" - ";
             

@@ -21,8 +21,8 @@ public class SimilarityHandler implements HttpHandler {
         if(ImportTxt.list.isEmpty() || ImportTxt.list.size() == 1) {
             response = "Error: Upload at least 2 files";
         } else {
-            File firstElem = (File) ImportTxt.list.get(ImportTxt.index1 - 1);
-            File secondElem = (File) ImportTxt.list.get(ImportTxt.index2 - 1);
+            TextFile firstElem = (TextFile) ImportTxt.list.get(ImportTxt.index1 - 1);
+            TextFile secondElem = (TextFile) ImportTxt.list.get(ImportTxt.index2 - 1);
             double result = SimilarityCheck.compareStrings(firstElem.content, secondElem.content);
             response = Double.toString(result * 100.0);
             ImportTxt.index1 = 0;

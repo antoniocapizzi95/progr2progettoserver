@@ -8,16 +8,19 @@ package javahttpserver;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
  * @author Antonio
  */
-public class RemoveFileHandler implements HttpHandler{
+public class RemoveFileHandler implements HttpHandler {
+
     @Override
     public void handle(HttpExchange he) throws IOException {
         if (he.getRequestMethod().equalsIgnoreCase("POST")) {
@@ -40,19 +43,32 @@ public class RemoveFileHandler implements HttpHandler{
                 OutputStream os = he.getResponseBody();
 
                 os.write(data);
-                System.out.print(new String(data)+"\n");
+                System.out.print(new String(data) + "\n");
                 String dataString = new String(data);
-                if(Integer.parseInt(dataString) == 0) {
-                    ImportTxt.list.clear();
-                } else
-                    if(Integer.parseInt(dataString) > 0) {
-                        ImportTxt.list.remove(Integer.parseInt(dataString) - 1);
+                int index = Integer.parseInt(dataString);
+                if (index == 0) {
+                    File folder = new File("files");
+                    File[] listOfFiles = folder.listFiles();
+
+                    for (int i = 0; i < listOfFiles.length; i++) {
+                        File file = listOfFiles[i];
+                        if (file.isFile() && file.getName().endsWith(".txt")) {
+                           file.delete();
+                        }
                     }
+                    ImportTxt.list.clear();
+                } else if (index > 0) {
+                    TextFile elem = (TextFile) ImportTxt.list.get(index - 1);
+                    String title = elem.title;
+                    File file = new File("files/" + title + ".txt");
+                    file.delete();
+                    ImportTxt.list.remove(index - 1);
+                }
                 he.close();
 
             } catch (NumberFormatException | IOException e) {
             }
         }
     }
-    
+
 }

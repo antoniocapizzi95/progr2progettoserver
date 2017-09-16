@@ -55,24 +55,24 @@ public class UploadHandler implements HttpHandler {
                 System.out.print(new String(data) + "\n");
                 String dataString = new String(data);
                 if ("t".equals(dataString.substring(0, 1))) {
-                    File listElem = new File(dataString.substring(2), null);
+                    TextFile listElem = new TextFile(dataString.substring(2), null);
                     System.out.print("Title: " + dataString.substring(2) + "\n");
                     ImportTxt.insert(listElem);
                 }
                 if ("c".equals(dataString.substring(0, 1))) {
                     int index = ImportTxt.list.size() - 1;
-                    File listElem = (File) ImportTxt.list.get(index);
+                    TextFile listElem = (TextFile) ImportTxt.list.get(index);
                     listElem.content = dataString.substring(2);
                     System.out.print("Content: " + dataString.substring(2) + "\n");
                     ImportTxt.list.remove(index);
                     ImportTxt.list.add(index, listElem);
                     try {
-                        PrintWriter writer = new PrintWriter(listElem.title+".txt", "UTF-8");
+                        PrintWriter writer = new PrintWriter("files/"+listElem.title+".txt", "UTF-8");
                         writer.println(listElem.content);
                         writer.close();
                     } catch (IOException e) {
                         // do something
-                        
+                        System.out.println(e.getMessage());
                     }
 
                 }

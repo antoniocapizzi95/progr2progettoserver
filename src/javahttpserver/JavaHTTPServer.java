@@ -8,6 +8,7 @@ package javahttpserver;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
+import java.io.File;
 
 /**
  *
@@ -20,6 +21,12 @@ public class JavaHTTPServer {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
+        File dir = new File("files");
+        if(!dir.exists()) {
+            dir.mkdir();
+        }
+        ImportTxt.addFromDir(dir.toString());
+
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
         server.createContext("/upload", new UploadHandler());
         server.createContext("/getSR", new SimilarityHandler());
