@@ -72,6 +72,7 @@ public class UploadHandler implements HttpHandler {
                         writer.close();
                     } catch (IOException e) {
                         // do something
+                        
                     }
 
                 }
