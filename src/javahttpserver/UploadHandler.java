@@ -12,6 +12,7 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
@@ -51,21 +52,28 @@ public class UploadHandler implements HttpHandler {
                 OutputStream os = he.getResponseBody();
 
                 os.write(data);
-                System.out.print(new String(data)+"\n");
+                System.out.print(new String(data) + "\n");
                 String dataString = new String(data);
-                if("t".equals(dataString.substring(0,1))) {
-                    File listElem = new File(dataString.substring(2),null);
-                    System.out.print("Title: "+dataString.substring(2)+"\n");
+                if ("t".equals(dataString.substring(0, 1))) {
+                    File listElem = new File(dataString.substring(2), null);
+                    System.out.print("Title: " + dataString.substring(2) + "\n");
                     ImportTxt.insert(listElem);
                 }
-                if("c".equals(dataString.substring(0,1))) {
+                if ("c".equals(dataString.substring(0, 1))) {
                     int index = ImportTxt.list.size() - 1;
                     File listElem = (File) ImportTxt.list.get(index);
                     listElem.content = dataString.substring(2);
-                    System.out.print("Content: "+dataString.substring(2)+"\n");
+                    System.out.print("Content: " + dataString.substring(2) + "\n");
                     ImportTxt.list.remove(index);
-                    ImportTxt.list.add(index,listElem);
-                    
+                    ImportTxt.list.add(index, listElem);
+                    try {
+                        PrintWriter writer = new PrintWriter(listElem.title+".txt", "UTF-8");
+                        writer.println(listElem.content);
+                        writer.close();
+                    } catch (IOException e) {
+                        // do something
+                    }
+
                 }
                 he.close();
 
