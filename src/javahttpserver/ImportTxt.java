@@ -9,9 +9,14 @@ package javahttpserver;
  *
  * @author Antonio
  */
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 
 public class ImportTxt {
@@ -38,6 +43,50 @@ public class ImportTxt {
                 ImportTxt.insert(elem);
             }
         }
+    }
+    
+    public static String importJSON(String path) {
+
+        FileReader f = null;
+        try {
+            f = new FileReader(path);
+        } catch (FileNotFoundException ex) {
+            //Logger.getLogger(ImportTextFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        BufferedReader b;
+        b = new BufferedReader(f);
+
+        String s = null;
+
+        boolean firstLine = true;
+
+        String fileContent = null;
+
+        while (true) {
+            String nextLine = "\n";
+            try {
+                if (firstLine) {
+                    s = b.readLine();
+                    if (s == null) {
+                        break;
+                    }
+                    fileContent = s;
+                    firstLine = false;
+                } else {
+
+                    s = b.readLine();
+                    if (s == null) {
+                        break;
+                    }
+                    fileContent = fileContent.concat(s);
+                }
+            } catch (IOException ex) {
+                //Logger.getLogger(ImportTextFile.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        return fileContent;
     }
 
 }

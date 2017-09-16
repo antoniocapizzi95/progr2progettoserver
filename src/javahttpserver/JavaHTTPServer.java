@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 import java.io.File;
+import javax.swing.JFrame;
+import org.json.JSONObject;
 
 /**
  *
@@ -21,13 +23,31 @@ public class JavaHTTPServer {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
+        String param = null;
+        String portParam = null;
+        try{
+            param = ImportTxt.importJSON("param.json");
+            JSONObject obj = new JSONObject(param);
+            portParam = obj.getString("port");
+        }
+        catch(Exception e) {
+            JFrame f = new JFrame();
+            CreateJSONDialog cjd = new CreateJSONDialog(f,true);
+            cjd.setVisible(true);
+            portParam = cjd.getPort();
+        }
+        
+        
+        
+        int port = Integer.parseInt(portParam);
+                
         File dir = new File("files");
         if(!dir.exists()) {
             dir.mkdir();
         }
         ImportTxt.addFromDir(dir.toString());
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/upload", new UploadHandler());
         server.createContext("/getSR", new SimilarityHandler());
         server.createContext("/getFUSituation", new FUSituationHandler());
