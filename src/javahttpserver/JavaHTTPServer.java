@@ -5,10 +5,13 @@
  */
 package javahttpserver;
 
+import com.mysql.jdbc.Connection;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 import java.io.File;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import org.json.JSONObject;
 
@@ -21,28 +24,31 @@ public class JavaHTTPServer {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         // TODO code application logic here
+
+        
+        /*IOWithDB db = new IOWithDB();
+        db.sendFileToDB();
+        db.showFilesOnDB();*/
+
         String param = null;
         String portParam = null;
-        try{
+        try {
             param = ImportTxt.importJSON("param.json");
             JSONObject obj = new JSONObject(param);
             portParam = obj.getString("port");
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             JFrame f = new JFrame();
-            CreateJSONDialog cjd = new CreateJSONDialog(f,true);
+            CreateJSONDialog cjd = new CreateJSONDialog(f, true);
             cjd.setVisible(true);
             portParam = cjd.getPort();
         }
-        
-        
-        
+
         int port = Integer.parseInt(portParam);
-                
+
         File dir = new File("files");
-        if(!dir.exists()) {
+        if (!dir.exists()) {
             dir.mkdir();
         }
         ImportTxt.addFromDir(dir.toString());
@@ -56,6 +62,8 @@ public class JavaHTTPServer {
         server.createContext("/removeFile", new RemoveFileHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
+        ServerStatus servstat = new ServerStatus();
+        servstat.setVisible(true);
     }
 
 }
