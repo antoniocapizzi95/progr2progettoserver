@@ -23,7 +23,17 @@ public class SimilarityHandler implements HttpHandler {
         } else {
             TextFile firstElem = (TextFile) ImportTxt.list.get(ImportTxt.index1 - 1);
             TextFile secondElem = (TextFile) ImportTxt.list.get(ImportTxt.index2 - 1);
-            double result = SimilarityCheck.compareStrings(firstElem.content, secondElem.content);
+            double result= 0.0;
+            switch(SimilarityCheck.algToUse) {
+                case "jaro": {
+                    result = SimilarityCheck.compareStrings(firstElem.content, secondElem.content);
+                    break;
+                }
+                case "lev": {
+                    result = SimilarityCheck.similarity(firstElem.content, secondElem.content);
+                    break;
+                }
+            }
             response = Double.toString(result * 100.0);
             ImportTxt.index1 = 0;
             ImportTxt.index2 = 0;

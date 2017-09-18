@@ -64,6 +64,7 @@ public class JavaHTTPServer {
         server.createContext("/getNumber", new GetNumberHandler());
         server.createContext("/setIndex", new SetIndexHandler());
         server.createContext("/removeFile", new RemoveFileHandler());
+        server.createContext("/setAlg", new SetAlgHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
         ServerStatus servstat = new ServerStatus();

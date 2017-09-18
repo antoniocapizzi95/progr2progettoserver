@@ -6,14 +6,19 @@
 package javahttpserver;
 
 import com.mysql.jdbc.Connection;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JFrame;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -33,11 +38,40 @@ public class IOWithDB {
         connection = (Connection) DriverManager.getConnection(connectionString);
     }
 
-    public void sendFileToDB(TextFile f) throws SQLException {
-        PreparedStatement prepared = connection.prepareStatement("insert into files (Title, Content) values (?,?)");
-        prepared.setString(1, f.title);
-        prepared.setString(2, f.content);
-        prepared.executeUpdate();
+    public void sendFileToDB(TextFile f) throws SQLException, UnsupportedEncodingException, NoSuchAlgorithmException {
+        Statement stm = connection.createStatement();
+        ResultSet rs = stm.executeQuery("select * from files");
+        /*byte[] bytesTitle = f.title.getBytes("UTF-8");
+        byte[] bytesContent = f.content.getBytes("UTF-8");
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] thedigestTitle = md.digest(bytesTitle);
+        byte[] thedigestContent = md.digest(bytesContent);*/
+
+        boolean flag = false;
+
+        while (rs.next()) {
+
+            /*String test = rs.getString("Title");
+            byte[] bytesTitleDB = rs.getString("Title").getBytes("UTF-8");
+            byte[] bytesContentDB = rs.getString("Content").getBytes("UTF-8");
+            byte[] thedigestTitleDB = md.digest(bytesTitleDB);
+            byte[] thedigestContentDB = md.digest(bytesContentDB);
+            if (thedigestTitleDB == thedigestTitle && thedigestContentDB == thedigestContent) {
+                flag = true;
+
+            }*/
+            if(f.content.equals(rs.getString("Content")) && f.title.equals(rs.getString("Title"))) {
+                flag = true;
+            }
+        }
+        if (!flag) {
+            PreparedStatement prepared = connection.prepareStatement("insert into files (Title, Content) values (?,?)");
+            prepared.setString(1, f.title);
+            prepared.setString(2, f.content);
+            prepared.executeUpdate();
+        }
+
     }
 
     public String showFilesOnDB() throws SQLException {
@@ -50,10 +84,12 @@ public class IOWithDB {
         return res;
     }
 
-    public void restoreFilesFromDB() throws SQLException {
+    public void restoreFilesFromDB() throws SQLException, IOException {
         Statement stm = connection.createStatement();
         ResultSet rs = stm.executeQuery("select * from files");
-        //ImportTxt.list.clear();
+        ImportTxt.list.clear();
+        File fi = new File("files");
+        FileUtils.cleanDirectory(fi); 
 
         while (rs.next()) {
             TextFile f = new TextFile(rs.getString("Title"), rs.getString("Content"));
@@ -79,7 +115,7 @@ public class IOWithDB {
             prepared.executeUpdate();
         } catch (Exception e) {
             JFrame f = new JFrame();
-            ErrorDialog ed = new ErrorDialog(f,true,"Invalid value");
+            ErrorDialog ed = new ErrorDialog(f, true, "Invalid value");
             ed.setVisible(true);
         }
 
