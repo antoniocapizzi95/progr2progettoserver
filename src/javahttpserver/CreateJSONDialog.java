@@ -7,6 +7,8 @@ package javahttpserver;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import org.json.JSONObject;
 
@@ -17,6 +19,7 @@ import org.json.JSONObject;
 public class CreateJSONDialog extends javax.swing.JDialog {
 
     private String port = null;
+    private String path = null;
 
     public String getPort() {
         return port;
@@ -50,8 +53,6 @@ public class CreateJSONDialog extends javax.swing.JDialog {
         portField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         setButton = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        setDefaultButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -66,15 +67,6 @@ public class CreateJSONDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabel4.setText("To set default parameters (port: 8000) click here:");
-
-        setDefaultButton.setText("Set Default");
-        setDefaultButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setDefaultButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,16 +74,18 @@ public class CreateJSONDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel4)
-                    .addComponent(setDefaultButton)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(setButton, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(setButton, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,13 +96,9 @@ public class CreateJSONDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(18, 18, 18)
+                .addGap(49, 49, 49)
                 .addComponent(setButton)
-                .addGap(27, 27, 27)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(setDefaultButton)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
 
         pack();
@@ -119,33 +109,19 @@ public class CreateJSONDialog extends javax.swing.JDialog {
         //String address = this.addressField.getText();
         String port = this.portField.getText();
         this.setPort(port);
-        //JSONObject obj = new JSONObject("{\"address\": \""+address+"\",\"port\": \""+port+"\"}");
         JSONObject obj = new JSONObject("{\"port\": \""+port+"\"}");
+        
+        //JSONObject obj = new JSONObject("{\"path\": \""+p+"\",\"port\": \""+port+"\"}");
         try {
             PrintWriter writer = new PrintWriter("param.json", "UTF-8");
             writer.println(obj.toString());
             writer.close();
         } catch (IOException e) {
             // do something
+            System.out.println(e.getMessage());
         }
         this.setVisible(false);
     }//GEN-LAST:event_setButtonActionPerformed
-
-    private void setDefaultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setDefaultButtonActionPerformed
-        // TODO add your handling code here:
-        //String address = "localhost";
-        String port = "8000";
-        this.setPort(port);
-        JSONObject obj = new JSONObject("{\"port\": \""+port+"\"}");
-        try {
-            PrintWriter writer = new PrintWriter("param.json", "UTF-8");
-            writer.println(obj.toString());
-            writer.close();
-        } catch (IOException e) {
-            // do something
-        }
-        this.setVisible(false);
-    }//GEN-LAST:event_setDefaultButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,9 +169,7 @@ public class CreateJSONDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField portField;
     private javax.swing.JButton setButton;
-    private javax.swing.JButton setDefaultButton;
     // End of variables declaration//GEN-END:variables
 }

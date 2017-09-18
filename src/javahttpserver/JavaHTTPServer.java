@@ -32,12 +32,16 @@ public class JavaHTTPServer {
         db.sendFileToDB();
         db.showFilesOnDB();*/
 
+        
         String param = null;
         String portParam = null;
+        //String path = null;
         try {
             param = ImportTxt.importJSON("param.json");
             JSONObject obj = new JSONObject(param);
             portParam = obj.getString("port");
+            /*path = obj.getString("path");
+            ImportTxt.directory = path;*/
         } catch (Exception e) {
             JFrame f = new JFrame();
             CreateJSONDialog cjd = new CreateJSONDialog(f, true);
