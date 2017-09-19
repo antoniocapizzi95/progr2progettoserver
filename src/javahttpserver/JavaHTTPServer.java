@@ -48,10 +48,10 @@ public class JavaHTTPServer {
 
         int port = Integer.parseInt(portParam);
 
-        File dir = new File("files");
-        if (!dir.exists()) {
+        File dir = new File(ImportTxt.directory);
+        /*if (!dir.exists()) {
             dir.mkdir();
-        }
+        }*/
         ImportTxt.addFromDir(dir.toString());
 
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);

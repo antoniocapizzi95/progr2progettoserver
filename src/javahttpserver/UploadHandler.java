@@ -67,7 +67,7 @@ public class UploadHandler implements HttpHandler {
                     ImportTxt.list.remove(index);
                     ImportTxt.list.add(index, listElem);
                     try {
-                        PrintWriter writer = new PrintWriter("files/"+listElem.title+".txt", "UTF-8");
+                        PrintWriter writer = new PrintWriter(ImportTxt.directory+"/"+listElem.title+".txt", "UTF-8");
                         writer.println(listElem.content);
                         writer.close();
                     } catch (IOException e) {

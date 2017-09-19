@@ -88,7 +88,7 @@ public class IOWithDB {
         Statement stm = connection.createStatement();
         ResultSet rs = stm.executeQuery("select * from files");
         ImportTxt.list.clear();
-        File fi = new File("files");
+        File fi = new File(ImportTxt.directory);
         FileUtils.cleanDirectory(fi); 
 
         while (rs.next()) {
@@ -97,7 +97,7 @@ public class IOWithDB {
             ImportTxt.insert(f);
 
             try {
-                PrintWriter writer = new PrintWriter("files/" + f.title + ".txt", "UTF-8");
+                PrintWriter writer = new PrintWriter(ImportTxt.directory+"/" + f.title + ".txt", "UTF-8");
                 writer.println(f.content);
                 writer.close();
             } catch (IOException e) {
