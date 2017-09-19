@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JFrame;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -41,27 +42,17 @@ public class IOWithDB {
     public void sendFileToDB(TextFile f) throws SQLException, UnsupportedEncodingException, NoSuchAlgorithmException {
         Statement stm = connection.createStatement();
         ResultSet rs = stm.executeQuery("select * from files");
-        /*byte[] bytesTitle = f.title.getBytes("UTF-8");
-        byte[] bytesContent = f.content.getBytes("UTF-8");
-
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] thedigestTitle = md.digest(bytesTitle);
-        byte[] thedigestContent = md.digest(bytesContent);*/
+        
 
         boolean flag = false;
+        String hashTitle = DigestUtils.md5Hex(f.title).toUpperCase();
+        String hashContent = DigestUtils.md5Hex(f.content).toUpperCase();
 
         while (rs.next()) {
 
-            /*String test = rs.getString("Title");
-            byte[] bytesTitleDB = rs.getString("Title").getBytes("UTF-8");
-            byte[] bytesContentDB = rs.getString("Content").getBytes("UTF-8");
-            byte[] thedigestTitleDB = md.digest(bytesTitleDB);
-            byte[] thedigestContentDB = md.digest(bytesContentDB);
-            if (thedigestTitleDB == thedigestTitle && thedigestContentDB == thedigestContent) {
-                flag = true;
-
-            }*/
-            if(f.content.equals(rs.getString("Content")) && f.title.equals(rs.getString("Title"))) {
+            String hashTitleDB = DigestUtils.md5Hex(rs.getString("Title")).toUpperCase();
+            String hashContentDB = DigestUtils.md5Hex(rs.getString("Content")).toUpperCase();
+            if (hashTitle.equals(hashTitleDB) && hashContent.equals(hashContentDB)) {
                 flag = true;
             }
         }
@@ -89,7 +80,7 @@ public class IOWithDB {
         ResultSet rs = stm.executeQuery("select * from files");
         ImportTxt.list.clear();
         File fi = new File(ImportTxt.directory);
-        FileUtils.cleanDirectory(fi); 
+        FileUtils.cleanDirectory(fi);
 
         while (rs.next()) {
             TextFile f = new TextFile(rs.getString("Title"), rs.getString("Content"));
@@ -97,7 +88,7 @@ public class IOWithDB {
             ImportTxt.insert(f);
 
             try {
-                PrintWriter writer = new PrintWriter(ImportTxt.directory+"/" + f.title + ".txt", "UTF-8");
+                PrintWriter writer = new PrintWriter(ImportTxt.directory + "/" + f.title + ".txt", "UTF-8");
                 writer.println(f.content);
                 writer.close();
             } catch (IOException e) {

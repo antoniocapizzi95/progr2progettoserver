@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.swing.JFrame;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONObject;
 
 /**
@@ -31,10 +32,12 @@ public class JavaHTTPServer {
        
         String param = null;
         String portParam = null;
+        String address = null;
         String path = null;
         try {
             param = ImportTxt.importJSON("param.json");
             JSONObject obj = new JSONObject(param);
+            address = obj.getString("address");
             portParam = obj.getString("port");
             path = obj.getString("path");
             path = path.replace("*", "\\");
@@ -44,9 +47,20 @@ public class JavaHTTPServer {
             CreateJSONDialog cjd = new CreateJSONDialog(f, true);
             cjd.setVisible(true);
             portParam = cjd.getPort();
+            address = cjd.getAddress();
+            path = cjd.getPath();
+            ImportTxt.directory = path;
         }
 
-        int port = Integer.parseInt(portParam);
+        int port = 0;
+        try {
+            Integer.parseInt(portParam);
+        }
+        catch(Exception e) {
+            JFrame frame = new JFrame();
+            ErrorDialog ed = new ErrorDialog(frame,true,"The value of port is invalid");
+            ed.setVisible(true);
+        }
 
         File dir = new File(ImportTxt.directory);
         /*if (!dir.exists()) {
@@ -54,7 +68,7 @@ public class JavaHTTPServer {
         }*/
         ImportTxt.addFromDir(dir.toString());
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(address,port), 0);
         server.createContext("/upload", new UploadHandler());
         server.createContext("/getSR", new SimilarityHandler());
         server.createContext("/getFUSituation", new FUSituationHandler());
