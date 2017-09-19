@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 import java.io.File;
+import java.nio.file.Path;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.swing.JFrame;
@@ -27,21 +28,17 @@ public class JavaHTTPServer {
     public static void main(String[] args) throws IOException, SQLException {
         // TODO code application logic here
 
-        
-        /*IOWithDB db = new IOWithDB();
-        db.sendFileToDB();
-        db.showFilesOnDB();*/
-
-        
+       
         String param = null;
         String portParam = null;
-        //String path = null;
+        String path = null;
         try {
             param = ImportTxt.importJSON("param.json");
             JSONObject obj = new JSONObject(param);
             portParam = obj.getString("port");
-            /*path = obj.getString("path");
-            ImportTxt.directory = path;*/
+            path = obj.getString("path");
+            path = path.replace("*", "\\");
+            ImportTxt.directory = path;
         } catch (Exception e) {
             JFrame f = new JFrame();
             CreateJSONDialog cjd = new CreateJSONDialog(f, true);

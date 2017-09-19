@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import org.json.JSONObject;
 
@@ -28,6 +29,7 @@ public class CreateJSONDialog extends javax.swing.JDialog {
     public void setPort(String port) {
         this.port = port;
     }
+
     /**
      * Creates new form CreateJSONDialog
      */
@@ -53,6 +55,8 @@ public class CreateJSONDialog extends javax.swing.JDialog {
         portField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         setButton = new javax.swing.JButton();
+        selectPathButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -61,11 +65,21 @@ public class CreateJSONDialog extends javax.swing.JDialog {
         jLabel3.setText("Port");
 
         setButton.setText("Set");
+        setButton.setEnabled(false);
         setButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setButtonActionPerformed(evt);
             }
         });
+
+        selectPathButton.setText("Select");
+        selectPathButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectPathButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Select the path to save files");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,30 +89,39 @@ public class CreateJSONDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(selectPathButton)
+                        .addGap(99, 99, 99))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(setButton, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(setButton, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addComponent(jLabel2)
+                .addGap(61, 61, 61))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel1)
-                .addGap(34, 34, 34)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(49, 49, 49)
+                    .addComponent(jLabel3)
+                    .addComponent(selectPathButton))
+                .addGap(46, 46, 46)
                 .addComponent(setButton)
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         pack();
@@ -109,9 +132,10 @@ public class CreateJSONDialog extends javax.swing.JDialog {
         //String address = this.addressField.getText();
         String port = this.portField.getText();
         this.setPort(port);
-        JSONObject obj = new JSONObject("{\"port\": \""+port+"\"}");
-        
-        //JSONObject obj = new JSONObject("{\"path\": \""+p+"\",\"port\": \""+port+"\"}");
+        //JSONObject obj = new JSONObject("{\"port\": \""+port+"\"}");
+        String p = this.path;
+        p = p.replace("\\", "*");
+        JSONObject obj = new JSONObject("{\"path\": \"" + p + "\",\"port\": \"" + port + "\"}");
         try {
             PrintWriter writer = new PrintWriter("param.json", "UTF-8");
             writer.println(obj.toString());
@@ -122,6 +146,31 @@ public class CreateJSONDialog extends javax.swing.JDialog {
         }
         this.setVisible(false);
     }//GEN-LAST:event_setButtonActionPerformed
+
+    private void selectPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPathButtonActionPerformed
+        // TODO add your handling code here:
+        String p = null;
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setDialogTitle("Select the directory to save file");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        //
+        // disable the "All files" option.
+        //
+        chooser.setAcceptAllFileFilterUsed(false);
+        //    
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            System.out.println("getCurrentDirectory(): "
+                    + chooser.getCurrentDirectory());
+            System.out.println("getSelectedFile() : "
+                    + chooser.getSelectedFile());
+            p = chooser.getSelectedFile().toString();
+        } else {
+            System.out.println("No Selection ");
+        }
+        this.path = p;
+        this.setButton.setEnabled(true);
+    }//GEN-LAST:event_selectPathButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,8 +217,10 @@ public class CreateJSONDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField portField;
+    private javax.swing.JButton selectPathButton;
     private javax.swing.JButton setButton;
     // End of variables declaration//GEN-END:variables
 }
