@@ -54,7 +54,7 @@ public class JavaHTTPServer {
 
         int port = 0;
         try {
-            Integer.parseInt(portParam);
+            port = Integer.parseInt(portParam);
         }
         catch(Exception e) {
             JFrame frame = new JFrame();
