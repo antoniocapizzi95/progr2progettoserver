@@ -75,6 +75,7 @@ public class ServerStatus extends javax.swing.JFrame {
 
         filesUploadedTxtArea.setColumns(20);
         filesUploadedTxtArea.setRows(5);
+        filesUploadedTxtArea.setEnabled(false);
         jScrollPane1.setViewportView(filesUploadedTxtArea);
 
         refreshButton.setText("Refresh");
@@ -88,6 +89,7 @@ public class ServerStatus extends javax.swing.JFrame {
 
         dbStatusTxtArea.setColumns(20);
         dbStatusTxtArea.setRows(5);
+        dbStatusTxtArea.setEnabled(false);
         jScrollPane2.setViewportView(dbStatusTxtArea);
 
         refreshButtonDB.setText("Refresh");
@@ -141,8 +143,8 @@ public class ServerStatus extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel2)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(toRemoveField, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(toRemoveField, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -188,7 +190,7 @@ public class ServerStatus extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(removeFromDBButton)
                     .addComponent(toRemoveField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(968, 968, 968))
+                .addGap(5107, 5107, 5107))
         );
 
         pack();
