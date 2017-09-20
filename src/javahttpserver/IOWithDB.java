@@ -46,14 +46,23 @@ public class IOWithDB {
 
         boolean flag = false;
         String hashTitle = DigestUtils.md5Hex(f.title).toUpperCase();
-        String hashContent = DigestUtils.md5Hex(f.content).toUpperCase();
-
+        //String hashContent = DigestUtils.md5Hex(f.content).toUpperCase();
+        
+        String contentMod = f.content.replace("\n", "");
+        contentMod = contentMod.replace("\r", "");
+        String hashContent = DigestUtils.md5Hex(contentMod).toUpperCase();
         while (rs.next()) {
+            
+            String titleDB = rs.getString("Title");
+            String contentDB = rs.getString("Content");
+            String contentDBMod = contentDB.replace("\n", "");
+            contentDBMod = contentDBMod.replace("\r", "");
 
-            String hashTitleDB = DigestUtils.md5Hex(rs.getString("Title")).toUpperCase();
-            String hashContentDB = DigestUtils.md5Hex(rs.getString("Content")).toUpperCase();
+            String hashTitleDB = DigestUtils.md5Hex(titleDB).toUpperCase();
+            String hashContentDB = DigestUtils.md5Hex(contentDBMod).toUpperCase();
             if (hashTitle.equals(hashTitleDB) && hashContent.equals(hashContentDB)) {
                 flag = true;
+                break;
             }
         }
         if (!flag) {

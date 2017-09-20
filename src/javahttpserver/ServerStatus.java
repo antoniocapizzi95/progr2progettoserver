@@ -70,6 +70,7 @@ public class ServerStatus extends javax.swing.JFrame {
         pathLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(517, 612));
 
         jLabel1.setText("Files uploaded on server");
 
@@ -85,7 +86,7 @@ public class ServerStatus extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("File on database");
+        jLabel2.setText("Files on database");
 
         dbStatusTxtArea.setColumns(20);
         dbStatusTxtArea.setRows(5);
