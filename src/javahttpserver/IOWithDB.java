@@ -27,7 +27,7 @@ import org.apache.commons.io.FileUtils;
  */
 public class IOWithDB {
 
-    private String connectionString = "jdbc:mysql://sql11.freemysqlhosting.net:3306/sql11194966?user=sql11194966&password=HW4hmP9Upg";
+    private String connectionString = "jdbc:mysql://sql11.freemysqlhosting.net:3306/sql11196074?user=sql11196074&password=gC7InZc5VP";
     private Connection connection;
 
     public IOWithDB() throws SQLException {
