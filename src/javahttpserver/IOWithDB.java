@@ -42,17 +42,16 @@ public class IOWithDB {
     public void sendFileToDB(TextFile f) throws SQLException, UnsupportedEncodingException, NoSuchAlgorithmException {
         Statement stm = connection.createStatement();
         ResultSet rs = stm.executeQuery("select * from files");
-        
 
         boolean flag = false;
         String hashTitle = DigestUtils.md5Hex(f.title).toUpperCase();
         //String hashContent = DigestUtils.md5Hex(f.content).toUpperCase();
-        
+
         String contentMod = f.content.replace("\n", "");
         contentMod = contentMod.replace("\r", "");
         String hashContent = DigestUtils.md5Hex(contentMod).toUpperCase();
         while (rs.next()) {
-            
+
             String titleDB = rs.getString("Title");
             String contentDB = rs.getString("Content");
             String contentDBMod = contentDB.replace("\n", "");
@@ -87,23 +86,46 @@ public class IOWithDB {
     public void restoreFilesFromDB() throws SQLException, IOException {
         Statement stm = connection.createStatement();
         ResultSet rs = stm.executeQuery("select * from files");
-        ImportTxt.list.clear();
+        /*ImportTxt.list.clear();
         File fi = new File(ImportTxt.directory);
-        FileUtils.cleanDirectory(fi);
+        FileUtils.cleanDirectory(fi);*/
 
         while (rs.next()) {
             TextFile f = new TextFile(rs.getString("Title"), rs.getString("Content"));
+            String hashTDB = DigestUtils.md5Hex(f.title).toUpperCase();
+            String cDB = f.content;
+            String cDBMod = cDB.replace("\n", "");
+            cDBMod = cDBMod.replace("\r", "");
+            String hashCDB = DigestUtils.md5Hex(cDBMod).toUpperCase();
 
-            ImportTxt.insert(f);
+            boolean flag = false;
 
-            try {
-                PrintWriter writer = new PrintWriter(ImportTxt.directory + "/" + f.title + ".txt", "UTF-8");
-                writer.println(f.content);
-                writer.close();
-            } catch (IOException e) {
-                // do something
-                System.out.println(e.getMessage());
+            for (int i = 0; i < ImportTxt.list.size(); i++) {
+                TextFile elem = (TextFile) ImportTxt.list.get(i);
+                String t = elem.title;
+                String hashT = DigestUtils.md5Hex(t).toUpperCase();
+                String c = elem.content;
+                String cMod = c.replace("\n", "");
+                cMod = cMod.replace("\r", "");
+                String hashC = DigestUtils.md5Hex(cMod).toUpperCase();
+                if (hashT.equals(hashTDB) && hashC.equals(hashCDB)) {
+                    flag = true;
+                    break;
+                }
             }
+
+            if (!flag) {
+                ImportTxt.insert(f);
+                try {
+                    PrintWriter writer = new PrintWriter(ImportTxt.directory + "/" + f.title + ".txt", "UTF-8");
+                    writer.println(f.content);
+                    writer.close();
+                } catch (IOException e) {
+                    // do something
+                    System.out.println(e.getMessage());
+                }
+            }
+
         }
     }
 
