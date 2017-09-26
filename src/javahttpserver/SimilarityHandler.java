@@ -27,14 +27,17 @@ public class SimilarityHandler implements HttpHandler {
             switch(SimilarityCheck.algToUse) {
                 case "jaro": {
                     result = SimilarityCheck.compareStrings(firstElem.content, secondElem.content);
+                    result = result * 100.0;
                     break;
                 }
                 case "lev": {
                     result = SimilarityCheck.similarity(firstElem.content, secondElem.content);
+                    result = result * 100.0;
+                    result = Math.round(result);
                     break;
                 }
             }
-            response = Double.toString(result * 100.0);
+            response = Double.toString(result);
             ImportTxt.index1 = 0;
             ImportTxt.index2 = 0;
         }
