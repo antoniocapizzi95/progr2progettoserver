@@ -55,7 +55,7 @@ public class UploadHandler implements HttpHandler {
                 System.out.print(new String(data) + "\n");
                 String dataString = new String(data);
                 if ("t".equals(dataString.substring(0, 1))) {
-                    TextFile listElem = new TextFile(dataString.substring(2), null);
+                    TextFile listElem = new TextFile(dataString.substring(2), null,null);
                     System.out.print("Title: " + dataString.substring(2) + "\n");
                     ImportTxt.insert(listElem);
                 }
@@ -63,6 +63,7 @@ public class UploadHandler implements HttpHandler {
                     int index = ImportTxt.list.size() - 1;
                     TextFile listElem = (TextFile) ImportTxt.list.get(index);
                     listElem.content = dataString.substring(2);
+                    listElem.md5 = FileIsPresentHandler.getLastMD5();
                     System.out.print("Content: " + dataString.substring(2) + "\n");
                     ImportTxt.list.remove(index);
                     ImportTxt.list.add(index, listElem);

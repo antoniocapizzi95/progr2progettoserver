@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 
 public class ImportTxt {
@@ -46,10 +47,18 @@ public class ImportTxt {
                 String name = file.getName();
                 name = name.replace(".txt", "");
                 String content = FileUtils.readFileToString(file);
-                TextFile elem = new TextFile(name, content);
+                String hash = ImportTxt.generateMD5(content);
+                TextFile elem = new TextFile(name, content, hash);
                 ImportTxt.insert(elem);
             }
         }
+    }
+    
+    public static String generateMD5(String content) {
+        String contentMod = content.replace("\n", "");
+        contentMod = contentMod.replace("\r", "");
+        String hashContent = DigestUtils.md5Hex(contentMod).toUpperCase();
+        return hashContent;
     }
 
     public static String setDirectoryPath() throws IOException {
