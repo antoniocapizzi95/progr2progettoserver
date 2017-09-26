@@ -194,7 +194,7 @@ public class ServerStatus extends javax.swing.JFrame {
         for (int i = 0; i < ImportTxt.list.size(); i++) {
             TextFile elem = (TextFile) ImportTxt.list.get(i);
             String indexString = Integer.toString(i + 1);
-            filesTitle = filesTitle+"ID: "+ indexString + " - File Name: " + elem.title + "\n";
+            filesTitle = filesTitle+"ID: "+ indexString + " - File Name: " + elem.title + " - MD5: "+ elem.md5 +"\n";
 
         }
         return filesTitle;

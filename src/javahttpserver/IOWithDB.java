@@ -69,7 +69,7 @@ public class IOWithDB {
         ResultSet rs = stm.executeQuery("select * from files");
         String res = "";
         while (rs.next()) {
-            res = res + ("ID: " + rs.getString("ID") + " - File Name: " + rs.getString("Title") + "\n");
+            res = res + ("ID: " + rs.getString("ID") + " - File Name: " + rs.getString("Title") + " - MD5: "+rs.getString("MD5") +"\n");
         }
         return res;
     }
