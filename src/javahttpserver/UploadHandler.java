@@ -27,19 +27,11 @@ public class UploadHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) throws IOException {
-        /*String response = "This is the response";
-        t.sendResponseHeaders(200, response.length());
-        OutputStream os = t.getResponseBody();
-        os.write(response.getBytes());
-        os.close();*/
-
         if (he.getRequestMethod().equalsIgnoreCase("POST")) {
             try {
                 Headers requestHeaders = he.getRequestHeaders();
-                //Set<Map.Entry<String, List<String>>> entries = requestHeaders.entrySet();
 
                 int contentLength = Integer.parseInt(requestHeaders.getFirst("Content-length"));
-                //System.out.println("" + requestHeaders.getFirst("Content-length"));
 
                 InputStream is = he.getRequestBody();
 
@@ -56,32 +48,18 @@ public class UploadHandler implements HttpHandler {
                 System.out.print(new String(data) + "\n");
                 String dataString = new String(data);
                 JSONObject obj = new JSONObject(dataString);
-                TextFile listElem = new TextFile(obj.getString("title"), obj.getString("content"),obj.getString("md5"));
+                TextFile listElem = new TextFile(obj.getString("title"), obj.getString("content"), obj.getString("md5"));
                 //System.out.print("Title: " + dataString.substring(2) + "\n");
                 ImportTxt.insert(listElem);
-                /*if ("t".equals(dataString.substring(0, 1))) {
-                    TextFile listElem = new TextFile(dataString.substring(2), null,null);
-                    System.out.print("Title: " + dataString.substring(2) + "\n");
-                    ImportTxt.insert(listElem);
+                try { //il nuovo file che è stato appena caricato sul server, viene copiato nella directory
+                    PrintWriter writer = new PrintWriter(ImportTxt.directory + "/" + listElem.title + ".txt", "UTF-8");
+                    writer.println(listElem.content);
+                    writer.close();
+                } catch (IOException e) {
+                    // do something
+                    System.out.println(e.getMessage());
                 }
-                if ("c".equals(dataString.substring(0, 1))) {
-                    int index = ImportTxt.list.size() - 1;
-                    TextFile listElem = (TextFile) ImportTxt.list.get(index);
-                    listElem.content = dataString.substring(2);
-                    listElem.md5 = FileIsPresentHandler.getLastMD5();
-                    System.out.print("Content: " + dataString.substring(2) + "\n");
-                    ImportTxt.list.remove(index);
-                    ImportTxt.list.add(index, listElem);
-                    try {
-                        PrintWriter writer = new PrintWriter(ImportTxt.directory+"/"+listElem.title+".txt", "UTF-8");
-                        writer.println(listElem.content);
-                        writer.close();
-                    } catch (IOException e) {
-                        // do something
-                        System.out.println(e.getMessage());
-                    }
-
-                }*/
+                
                 he.close();
 
             } catch (NumberFormatException | IOException e) {
