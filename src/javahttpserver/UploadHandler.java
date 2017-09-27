@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.json.JSONObject;
 
 /**
  *
@@ -54,7 +55,11 @@ public class UploadHandler implements HttpHandler {
                 os.write(data);
                 System.out.print(new String(data) + "\n");
                 String dataString = new String(data);
-                if ("t".equals(dataString.substring(0, 1))) {
+                JSONObject obj = new JSONObject(dataString);
+                TextFile listElem = new TextFile(obj.getString("title"), obj.getString("content"),obj.getString("md5"));
+                //System.out.print("Title: " + dataString.substring(2) + "\n");
+                ImportTxt.insert(listElem);
+                /*if ("t".equals(dataString.substring(0, 1))) {
                     TextFile listElem = new TextFile(dataString.substring(2), null,null);
                     System.out.print("Title: " + dataString.substring(2) + "\n");
                     ImportTxt.insert(listElem);
@@ -76,7 +81,7 @@ public class UploadHandler implements HttpHandler {
                         System.out.println(e.getMessage());
                     }
 
-                }
+                }*/
                 he.close();
 
             } catch (NumberFormatException | IOException e) {

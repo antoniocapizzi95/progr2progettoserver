@@ -77,6 +77,7 @@ public class JavaHTTPServer {
         server.createContext("/removeFile", new RemoveFileHandler());
         server.createContext("/setAlg", new SetAlgHandler());
         server.createContext("/fileIsPresent", new FileIsPresentHandler());
+        server.createContext("/readFile", new ReadFileHandler());
         server.setExecutor(null); // creates a default executor
         server.start();
         ServerStatus servstat = new ServerStatus();
