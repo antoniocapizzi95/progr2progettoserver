@@ -44,11 +44,11 @@ public class IOWithDB {
         ResultSet rs = stm.executeQuery("select * from files");
 
         boolean flag = false;
-        
+
         while (rs.next()) {
 
             String hashDB = rs.getString("MD5");
-         
+
             if (hashDB.equals(f.md5)) {
                 flag = true;
                 break;
@@ -69,7 +69,7 @@ public class IOWithDB {
         ResultSet rs = stm.executeQuery("select * from files");
         String res = "";
         while (rs.next()) {
-            res = res + ("ID: " + rs.getString("ID") + " - File Name: " + rs.getString("Title") + " - MD5: "+rs.getString("MD5") +"\n");
+            res = res + ("ID: " + rs.getString("ID") + " - File Name: " + rs.getString("Title") + " - MD5: " + rs.getString("MD5") + "\n");
         }
         return res;
     }
@@ -77,17 +77,15 @@ public class IOWithDB {
     public void restoreFilesFromDB() throws SQLException, IOException {
         Statement stm = connection.createStatement();
         ResultSet rs = stm.executeQuery("select * from files");
-        
 
         while (rs.next()) {
             TextFile fDB = new TextFile(rs.getString("Title"), rs.getString("Content"), rs.getString("MD5"));
-            
 
             boolean flag = false;
 
             for (int i = 0; i < ImportTxt.list.size(); i++) {
                 TextFile f = (TextFile) ImportTxt.list.get(i);
-                
+
                 if (f.md5.equals(fDB.md5)) {
                     flag = true;
                     break;
@@ -112,9 +110,13 @@ public class IOWithDB {
     public void removeFileFromDB(String toRemove) throws SQLException {
         PreparedStatement prepared = connection.prepareStatement("delete from files where ID=?");
         try {
-            int index = Integer.parseInt(toRemove);
             prepared.setString(1, toRemove);
-            prepared.executeUpdate();
+            int res = prepared.executeUpdate();
+            if (res == 0) {
+                JFrame f = new JFrame();
+                ErrorDialog ed = new ErrorDialog(f, true, "Invalid value");
+                ed.setVisible(true);
+            }
         } catch (Exception e) {
             JFrame f = new JFrame();
             ErrorDialog ed = new ErrorDialog(f, true, "Invalid value");
