@@ -56,13 +56,13 @@ public class RemoveFileHandler implements HttpHandler {
                            file.delete();
                         }
                     }
-                    ImportTxt.list.clear();
+                    //ImportTxt.list.clear();
                 } else if (index > 0) {
-                    TextFile elem = (TextFile) ImportTxt.list.get(index - 1);
+                    TextFile elem = (TextFile) ImportTxt.getElem(index - 1);
                     String title = elem.title;
                     File file = new File("files/" + title + ".txt");
                     file.delete();
-                    ImportTxt.list.remove(index - 1);
+                    ImportTxt.removeElem(index - 1);
                 }
                 he.close();
 

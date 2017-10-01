@@ -49,8 +49,8 @@ public class FileIsPresentHandler implements HttpHandler {
                 dataString = dataString.replace("\r","");
                 FileIsPresentHandler.lastMD5 = dataString;
                 boolean isPresent = false;
-                for(int i=0; i<ImportTxt.list.size(); i++) {
-                    TextFile f = (TextFile) ImportTxt.list.get(i);
+                for(int i=0; i<ImportTxt.getSize(); i++) {
+                    TextFile f = ImportTxt.getElem(i);
                     if(dataString.equals(f.md5)) {
                         isPresent = true;
                         break;

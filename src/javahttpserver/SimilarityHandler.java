@@ -18,11 +18,11 @@ public class SimilarityHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange he) throws IOException {
         String response = null;
-        if(ImportTxt.list.isEmpty() || ImportTxt.list.size() == 1) {
+        if(ImportTxt.getSize() <= 1) {
             response = "Error: Upload at least 2 files";
         } else {
-            TextFile firstElem = (TextFile) ImportTxt.list.get(ImportTxt.index1 - 1);
-            TextFile secondElem = (TextFile) ImportTxt.list.get(ImportTxt.index2 - 1);
+            TextFile firstElem = (TextFile) ImportTxt.getElem(ImportTxt.index1 - 1);
+            TextFile secondElem = (TextFile) ImportTxt.getElem(ImportTxt.index2 - 1);
             double result= 0.0;
             switch(SimilarityCheck.algToUse) {
                 case "jaro": {

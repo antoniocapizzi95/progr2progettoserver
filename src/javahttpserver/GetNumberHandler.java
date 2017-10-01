@@ -18,7 +18,7 @@ public class GetNumberHandler implements HttpHandler{
     
     @Override
     public void handle(HttpExchange he) throws IOException {
-        int numberOfFiles = ImportTxt.list.size();
+        int numberOfFiles = ImportTxt.getSize();
         String result = Integer.toString(numberOfFiles);
         he.sendResponseHeaders(200, result.length());
         OutputStream os = he.getResponseBody();

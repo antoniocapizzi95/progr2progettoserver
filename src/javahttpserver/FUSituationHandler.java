@@ -23,8 +23,8 @@ public class FUSituationHandler implements HttpHandler {
     public void handle(HttpExchange he) throws IOException {
         
         String filesTitle = "";
-        for(int i=0; i<ImportTxt.list.size(); i++) {
-            TextFile elem = (TextFile) ImportTxt.list.get(i);
+        for(int i=0; i<ImportTxt.getSize(); i++) {
+            TextFile elem = ImportTxt.getElem(i);
             String indexString = Integer.toString(i+1);
             filesTitle = filesTitle + indexString+")"+elem.title+" - ";
             

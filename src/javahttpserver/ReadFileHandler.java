@@ -22,7 +22,7 @@ public class ReadFileHandler implements HttpHandler{
     public void handle(HttpExchange he) throws IOException {
         String content = "";
         
-        TextFile elem = (TextFile) ImportTxt.list.get(ImportTxt.index1 - 1);
+        TextFile elem = (TextFile) ImportTxt.getElem(ImportTxt.index1 - 1);
         content = elem.content;
         ImportTxt.index1 = 0;
         he.sendResponseHeaders(200, content.length());

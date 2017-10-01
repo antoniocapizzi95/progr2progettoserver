@@ -27,7 +27,7 @@ import org.apache.commons.io.FileUtils;
  */
 public class IOWithDB {
 
-    private String connectionString = "jdbc:mysql://sql11.freemysqlhosting.net:3306/sql11196074?user=sql11196074&password=gC7InZc5VP";
+    private String connectionString = "jdbc:mysql://sql11.freemysqlhosting.net:3306/sql11197180?user=sql11197180&password=lxYZmquz97";
     private Connection connection;
 
     public IOWithDB() throws SQLException {
@@ -83,8 +83,8 @@ public class IOWithDB {
 
             boolean flag = false;
 
-            for (int i = 0; i < ImportTxt.list.size(); i++) {
-                TextFile f = (TextFile) ImportTxt.list.get(i);
+            for (int i = 0; i < ImportTxt.getSize(); i++) {
+                TextFile f = (TextFile) ImportTxt.getElem(i);
 
                 if (f.md5.equals(fDB.md5)) {
                     flag = true;

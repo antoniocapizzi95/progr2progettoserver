@@ -191,8 +191,8 @@ public class ServerStatus extends javax.swing.JFrame {
 
     private String getFilesUploaded() {
         String filesTitle = "";
-        for (int i = 0; i < ImportTxt.list.size(); i++) {
-            TextFile elem = (TextFile) ImportTxt.list.get(i);
+        for (int i = 0; i < ImportTxt.getSize(); i++) {
+            TextFile elem = ImportTxt.getElem(i);
             String indexString = Integer.toString(i + 1);
             filesTitle = filesTitle+"ID: "+ indexString + " - File Name: " + elem.title + " - MD5: "+ elem.md5 +"\n";
 
@@ -212,8 +212,8 @@ public class ServerStatus extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(ServerStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (int i = 0; i < ImportTxt.list.size(); i++) {
-            TextFile elem = (TextFile) ImportTxt.list.get(i);
+        for (int i = 0; i < ImportTxt.getSize(); i++) {
+            TextFile elem = (TextFile) ImportTxt.getElem(i);
             try {
                 db.sendFileToDB(elem);
             } catch (SQLException ex) {

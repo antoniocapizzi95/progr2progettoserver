@@ -23,7 +23,7 @@ import org.apache.commons.io.FileUtils;
 
 public class ImportTxt {
 
-    public static ArrayList list = new ArrayList();
+    private static ArrayList<TextFile> list = new ArrayList();
     public static int index1 = 0;
     public static int index2 = 0;
 
@@ -35,6 +35,15 @@ public class ImportTxt {
 
     public static void insert(TextFile elem) {
         ImportTxt.list.add(elem);
+    }
+    public static TextFile getElem(int index) {
+        return ImportTxt.list.get(index);
+    }
+    public static void removeElem(int index) {
+        ImportTxt.list.remove(index);
+    }
+    public static int getSize() {
+        return ImportTxt.list.size();
     }
 
     public static void addFromDir(String path) throws IOException {
